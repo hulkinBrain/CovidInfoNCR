@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>COVID Help information</title>
+        <link href="css/bulma.min.css" rel="stylesheet">
+        <link href="css/index.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    </head>
+    <body>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <div class="is-size-4 has-text-weight-medium" style="display: flex; align-items: center; margin-left: 10px;">CovidInfo NCR</div>
+                <!---Burger Menu Icon--->
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" onclick="toggleNavbar()">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" onclick="toggleTab(0)">
+                        Oxygen Suppliers
+                    </a>
+
+                    <a class="navbar-item" onclick="toggleTab(1)">
+                        Food Suppliers
+                    </a>
+
+                    <a class="navbar-item" onclick="toggleTab(2)">
+                        Vaccine Suppliers
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <div class="masterContainer" style="background-color: rgba(0, 0, 0, 0.05); min-width: 100vw; min-height: 100vh; justify-content: center; padding: 50px;">
+            <div class="oxygenSupplierContainer tab">
+                <template class="itemTemplate columns">
+                    <div class="block item column is-5"
+                         style="background-color: white; border-radius: 10px; padding: 20px; margin-left: auto; margin-right: auto">
+                        <div class="columns">
+                            <div class="fieldName column is-5"></div>
+                            <div class="fieldValue column" style="overflow: auto;"></div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <div class="foodProviderContainer tab"></div>
+            <div class="vaccineProviderContainer tab"></div>
+        </div>
+
+        <div class="disclaimer" style="display: block; position: fixed; bottom: 0; right: 0; background-color: rgb(200, 200, 200); padding: 20px">
+            <div style="position: absolute; top: 0; right: 0; padding: 10px; cursor: pointer;" id="closeButton;" onclick="closeDisclaimer();">
+                <p><span class="material-icons">close</span></p>
+            </div>
+            <div>
+                <strong>Information put up as received and not personally verified.</strong> I wanted to do my part and
+                have something more persistent since twitter has a character limit and instagram stories get
+                deleted after 24hours. Please check the authenticity by calling the numbers and let me know, I'll update
+                the contact information by putting <strong>(Verified)</strong> in front of them.
+            </div>
+        </div>
+
+        <script>
+          const oxygenSupplierContainer = document.querySelector(".oxygenSupplierContainer");
+          const foodProviderContainer = document.querySelector(".foodProviderContainer");
+          const vaccineProviderContainer = document.querySelector(".vaccineProviderContainer")
+
+          let itemTemplate = document.querySelector(".itemTemplate");
+          fetch("data/oxygenSuppliers.json")
+            .then(response => response.json())
+            .then(jsonData => {
+              for(let data of Object.entries(jsonData)){
+                let item = itemTemplate.content.cloneNode(true);
+                let itemHtmlEl = item.querySelector(".item");
+                let rowTemplate = item.querySelector(".columns");
+                itemHtmlEl.innerHTML = "";
+                for(const [key, value] of Object.entries(data[1])){
+                  let row = rowTemplate.cloneNode(true);
+                  row.querySelector(".fieldName").innerHTML = `<strong>${key.toString()}:</strong>`;
+                  row.querySelector(".fieldValue").innerHTML = value.toString();
+                  itemHtmlEl.appendChild(row);
+                }
+                oxygenSupplierContainer.appendChild(item);
+              }
+            });
+
+          fetch("data/foodProviders.json")
+            .then(response => response.json())
+            .then(jsonData => {
+              for(let data of Object.entries(jsonData)){
+                let item = itemTemplate.content.cloneNode(true);
+                let itemHtmlEl = item.querySelector(".item");
+                let rowTemplate = item.querySelector(".columns");
+                itemHtmlEl.innerHTML = "";
+                for(const [key, value] of Object.entries(data[1])){
+                  let row = rowTemplate.cloneNode(true);
+                  row.querySelector(".fieldName").innerHTML = `<strong>${key.toString()}:</strong>`;
+                  row.querySelector(".fieldValue").innerHTML = value.toString();
+                  itemHtmlEl.appendChild(row);
+                }
+                foodProviderContainer.appendChild(item);
+              }
+            });
+
+          fetch("data/vaccineProviders.json")
+            .then(response => response.json())
+            .then(jsonData => {
+              for(let data of Object.entries(jsonData)){
+                let item = itemTemplate.content.cloneNode(true);
+                let itemHtmlEl = item.querySelector(".item");
+                let rowTemplate = item.querySelector(".columns");
+                itemHtmlEl.innerHTML = "";
+                for(const [key, value] of Object.entries(data[1])){
+                  let row = rowTemplate.cloneNode(true);
+                  row.querySelector(".fieldName").innerHTML = `<strong>${key.toString()}:</strong>`;
+                  row.querySelector(".fieldValue").innerHTML = value.toString();
+                  itemHtmlEl.appendChild(row);
+                }
+                vaccineProviderContainer.appendChild(item);
+              }
+            });
+        </script>
+        <script>
+            const tabs = document.querySelectorAll(".tab");
+            const tabActivators = document.querySelectorAll(".tabActivator");
+            const toggleTab = (tabNo) => {
+              for(let i=0; i < i < tabs.length; i++){
+                if(i === tabNo){
+                    tabs[i].style.display = "block";
+                    tabActivators[i].classList.add("is-active");
+                }
+                else{
+                    tabs[i].style.display = "none";
+                    tabActivators[i].classList.remove("is-active");
+                }
+              }
+            };
+            document.onload = () => {
+              toggleTab(0);
+            }
+
+            const navbarMenu = document.querySelector(".navbar-menu");
+            const toggleNavbar = () => {
+                navbarMenu.classList.contains("is-active") ? navbarMenu.classList.remove("is-active") : navbarMenu.classList.add("is-active");
+            }
+
+
+            function closeDisclaimer(){
+              document.querySelector(".disclaimer").style.display = "none";
+            }
+        </script>
+    </body>
+</html>
