@@ -24,19 +24,19 @@
             <div class="navbar-menu">
                 <div class="navbar-start">
                     <a class="navbar-item" onclick="toggleTab(0)">
-                        Oxygen Suppliers
+                        <div class="tabSelector">Oxygen Suppliers</div>
                     </a>
 
                     <a class="navbar-item" onclick="toggleTab(1)">
-                        Food Suppliers
+                        <div class="tabSelector">Food Suppliers</div>
                     </a>
 
                     <a class="navbar-item" onclick="toggleTab(2)">
-                        Vaccine Suppliers
+                        <div class="tabSelector">Vaccine Suppliers</div>
                     </a>
 
-                    <a class="navbar-item" href="https://github.com/hulkinBrain/CovidInfoNCR/issues">
-                        Verify Providers
+                    <a class="navbar-item has-background-success-light" href="https://github.com/hulkinBrain/CovidInfoNCR/issues">
+                        <div class="tabSelector">Verify Providers</div>
                     </a>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                 <strong>Information put up as received and not personally verified.</strong> I wanted to do my part and
                 have something more persistent since twitter has a character limit and instagram stories get
                 deleted after 24hours. Please check the authenticity by calling the numbers and let me know by clicking
-                Verify Provider and writing the provider name and whether they are alright or not. I'll update the
+                <cite>Verify Provider</cite> and writing the provider name and whether they are alright or not. I'll update the
                 contact information by putting <strong>(Verified)</strong> in front of them.
             </div>
         </div>
@@ -133,23 +133,27 @@
         <script>
             const tabs = document.querySelectorAll(".tab");
             const tabActivators = document.querySelectorAll(".tabActivator");
+            const navbarMenu = document.querySelector(".navbar-menu");
+
             const toggleTab = (tabNo) => {
-              for(let i=0; i < i < tabs.length; i++){
+              for(let i=0; i < tabs.length; i++){
                 if(i === tabNo){
                     tabs[i].style.display = "block";
-                    tabActivators[i].classList.add("is-active");
+                    // tabActivators[i].classList.add("is-active");
                 }
                 else{
                     tabs[i].style.display = "none";
-                    tabActivators[i].classList.remove("is-active");
+                    // tabActivators[i].classList.remove("is-active");
                 }
               }
+              navbarMenu.classList.add("is-active");
+              toggleNavbar();
             };
             document.onload = () => {
               toggleTab(0);
             }
 
-            const navbarMenu = document.querySelector(".navbar-menu");
+
             const toggleNavbar = () => {
                 navbarMenu.classList.contains("is-active") ? navbarMenu.classList.remove("is-active") : navbarMenu.classList.add("is-active");
             }
